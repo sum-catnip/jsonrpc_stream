@@ -36,7 +36,7 @@ class RpcRequest(RpcIDEntity):
 @dataclass
 class RpcNotification(RpcEntity):
     method: str
-    params: typing.Union[list, dict, None]
+    params: typing.Union[tuple, list, dict, None]
     jsonrpc: str = '2.0'
 
     def to_dict(self):

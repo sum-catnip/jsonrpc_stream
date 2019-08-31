@@ -184,6 +184,28 @@ class JsonRpcEndpoint:
         asyncio.sleep(self._timeout)
         future.cancel()
 
+    async def notify(
+        self,
+        namespace: str,
+        name: str,
+        *args: typing.Any,
+        **kwargs: typing.Any
+    ):
+        if not self.running:
+            raise RuntimeError('endpoint not running, please call [start]')
+
+        if args and kwargs:
+            raise ValueError(
+                'request must either have positional or named arguments ' +
+                'but not both'
+            )
+
+        await self.stream.dispatch_entity(
+            protocol.RpcNotification(
+                namespace + self.namespace_seperator + name, args or kwargs
+            )
+        )
+
     async def call(
         self,
         namespace: str,
