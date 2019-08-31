@@ -1,4 +1,4 @@
-from aio_json_rpc import exceptions
+from jsonrpc_stream import exceptions
 import enum
 import types
 import typing

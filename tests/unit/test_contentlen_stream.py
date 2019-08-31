@@ -1,8 +1,8 @@
 # type: ignore
-from aio_json_rpc.streams   import ContentLengthEntityStream
-from aio_json_rpc.contracts import RpcEntityStream
-from aio_json_rpc import protocol
-from aio_json_rpc.serializers import JsonSerializer
+from jsonrpc_stream.streams   import ContentLengthEntityStream
+from jsonrpc_stream.contracts import RpcEntityStream
+from jsonrpc_stream import protocol
+from jsonrpc_stream.serializers import JsonSerializer
 
 import json
 import asyncio

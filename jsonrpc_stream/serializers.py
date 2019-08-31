@@ -1,6 +1,6 @@
-from aio_json_rpc import contracts
-from aio_json_rpc import protocol
-from aio_json_rpc import exceptions
+from jsonrpc_stream import contracts
+from jsonrpc_stream import protocol
+from jsonrpc_stream import exceptions
 
 try: import ujson as json
 except ImportError: import json  # type: ignore

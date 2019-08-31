@@ -1,7 +1,7 @@
 import typing
 import traceback
 
-from aio_json_rpc import protocol
+from jsonrpc_stream import protocol
 
 
 class JsonRpcException(Exception):

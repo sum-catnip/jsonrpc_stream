@@ -1,7 +1,7 @@
-from aio_json_rpc import exceptions
-from aio_json_rpc import protocol
-from aio_json_rpc import contracts
-from aio_json_rpc import dispatcher
+from jsonrpc_stream import exceptions
+from jsonrpc_stream import protocol
+from jsonrpc_stream import contracts
+from jsonrpc_stream import dispatcher
 
 import logging
 import asyncio

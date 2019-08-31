@@ -1,7 +1,7 @@
-from aio_json_rpc import endpoint
-from aio_json_rpc import serializers
-from aio_json_rpc import streams
-from aio_json_rpc import dispatcher
+from jsonrpc_stream import endpoint
+from jsonrpc_stream import serializers
+from jsonrpc_stream import streams
+from jsonrpc_stream import dispatcher
 
 import multiprocessing
 import asyncio

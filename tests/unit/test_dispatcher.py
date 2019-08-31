@@ -1,6 +1,6 @@
-from aio_json_rpc.dispatcher import MethodDispatcher, DuplicateMethodError
-from aio_json_rpc import dispatcher as di
-from aio_json_rpc import exceptions
+from jsonrpc_stream.dispatcher import MethodDispatcher, DuplicateMethodError
+from jsonrpc_stream import dispatcher as di
+from jsonrpc_stream import exceptions
 
 import pytest
 

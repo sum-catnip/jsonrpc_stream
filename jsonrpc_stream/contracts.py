@@ -1,4 +1,4 @@
-from aio_json_rpc import protocol
+from jsonrpc_stream import protocol
 
 import abc
 import typing

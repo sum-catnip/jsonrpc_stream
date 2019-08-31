@@ -1,6 +1,6 @@
-from aio_json_rpc.endpoint import JsonRpcEndpoint
-from aio_json_rpc import dispatcher
-from aio_json_rpc import protocol as pro
+from jsonrpc_stream.endpoint import JsonRpcEndpoint
+from jsonrpc_stream import dispatcher
+from jsonrpc_stream import protocol as pro
 
 import pytest
 

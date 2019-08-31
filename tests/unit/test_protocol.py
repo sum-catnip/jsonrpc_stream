@@ -1,4 +1,4 @@
-from aio_json_rpc import protocol as pro
+from jsonrpc_stream import protocol as pro
 import pytest
 
 

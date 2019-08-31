@@ -1,5 +1,5 @@
-from aio_json_rpc import contracts
-from aio_json_rpc import protocol
+from jsonrpc_stream import contracts
+from jsonrpc_stream import protocol
 
 import asyncio
 import typing

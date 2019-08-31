@@ -1,5 +1,5 @@
-from aio_json_rpc.serializers import JsonSerializer
-from aio_json_rpc import protocol as pro
+from jsonrpc_stream.serializers import JsonSerializer
+from jsonrpc_stream import protocol as pro
 
 import json
 import pytest
