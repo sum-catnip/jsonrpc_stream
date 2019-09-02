@@ -186,7 +186,7 @@ class JsonRpcEndpoint:
 
     async def notify(
         self,
-        namespace: str,
+        namespace: typing.Optional[str],
         name: str,
         *args: typing.Any,
         **kwargs: typing.Any
@@ -200,15 +200,14 @@ class JsonRpcEndpoint:
                 'but not both'
             )
 
+        if namespace: name = namespace + self.namespace_seperator + name
         await self.stream.dispatch_entity(
-            protocol.RpcNotification(
-                namespace + self.namespace_seperator + name, args or kwargs
-            )
+            protocol.RpcNotification(name, args or kwargs)
         )
 
     async def call(
         self,
-        namespace: str,
+        namespace: typing.Optional[str],
         name: str,
         *args: typing.Any,
         **kwargs: typing.Any
@@ -223,10 +222,9 @@ class JsonRpcEndpoint:
             )
 
         id = str(uuid.uuid4())
+        if namespace: name = namespace + self.namespace_seperator + name
         await self.stream.dispatch_entity(
-            protocol.RpcRequest(
-                id, namespace + self.namespace_seperator + name, args or kwargs
-            )
+            protocol.RpcRequest(id, name, args or kwargs)
         )
 
         res = self._requests[id] = asyncio.Future()

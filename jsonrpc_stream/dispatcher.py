@@ -6,36 +6,6 @@ import inspect
 import functools
 
 
-class DuplicateMethodError(ValueError): pass
-
-
-class MethodDispatcher:
-    def __init__(self):
-        self.methods: typing.Dict[str, typing.Callable] = {}
-
-    def add_target(self, name: str, coro: typing.Callable):
-        if name in self.methods: raise DuplicateMethodError(name)
-        self.methods[name] = coro
-
-    async def dispatch(
-        self,
-        name: str,
-        params: typing.Any
-    ) -> typing.Any:
-        try:
-            if isinstance(params, list):
-                return await self.methods[name](*params)
-            elif isinstance(params, dict):
-                return await self.methods[name](**params)
-            elif params is None:
-                return await self.methods[name]()
-            else: return await self.methods[name](params)
-        except KeyError:
-            raise exceptions.JsonRpcMethodNotFound.from_method(name)
-        except TypeError:
-            raise exceptions.JsonRpcInvalidParams.from_method(name)
-
-
 class DiscoverMode(enum.Enum):
     decorated = enum.auto()
     public    = enum.auto()
