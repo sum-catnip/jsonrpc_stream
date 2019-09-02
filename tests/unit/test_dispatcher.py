@@ -1,57 +1,7 @@
-from jsonrpc_stream.dispatcher import MethodDispatcher, DuplicateMethodError
 from jsonrpc_stream import dispatcher as di
 from jsonrpc_stream import exceptions
 
 import pytest
-
-
-@pytest.fixture
-def dispatcher() -> MethodDispatcher:
-    return MethodDispatcher()
-
-
-def test_prevent_duplicates(
-    dispatcher: MethodDispatcher
-):
-    dispatcher.add_target('kektop', print)
-    with pytest.raises(DuplicateMethodError):
-        dispatcher.add_target('kektop', print)
-
-
-@pytest.mark.asyncio
-async def test_method_not_found(
-    dispatcher: MethodDispatcher
-):
-    with pytest.raises(exceptions.JsonRpcMethodNotFound):
-        await dispatcher.dispatch('dispatchmedaddy', None)
-
-
-@pytest.mark.asyncio
-async def test_dispatch_noargs(
-    dispatcher: MethodDispatcher
-):
-    async def kektop():
-        return 'noodles'
-
-    dispatcher.add_target('topkek', kektop)
-    assert await dispatcher.dispatch('topkek', None) == 'noodles'
-
-
-@pytest.mark.asyncio
-async def test_dispatch_args(
-    dispatcher: MethodDispatcher
-):
-    async def yeet(*args, **kwargs):
-        return f'args: {args} kwargs: {kwargs}'
-
-    dispatcher.add_target('yeet', yeet)
-    assert await dispatcher.dispatch(
-        'yeet', [1, 'kek', True]
-    ) == "args: (1, 'kek', True) kwargs: {}"
-
-    assert await dispatcher.dispatch(
-        'yeet', {'kek': 'top', 'false': True}
-    ) == "args: () kwargs: {'kek': 'top', 'false': True}"
 
 
 @pytest.mark.asyncio
