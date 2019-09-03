@@ -7,10 +7,10 @@ import pytest
 @pytest.mark.asyncio
 async def test_dispatcher_decorated():
     class Kek:
-        @di.dispatch_target
+        @di.request
         def topkek(self): return 'yee'
 
-        @di.dispatch_target
+        @di.request
         async def kektop(self, a: str): return a
 
     n = di.DispatchNamespace(Kek(), di.DiscoverMode.decorated)
@@ -23,7 +23,7 @@ async def test_dispatcher_public():
     class Kek:
         def topkek(self): return 'yee'
 
-        @di.dispatch_target
+        @di.request
         async def _kektop(self, a: str): return a
 
     n = di.DispatchNamespace(Kek(), di.DiscoverMode.public)
@@ -35,7 +35,7 @@ async def test_dispatcher_public():
 @pytest.mark.asyncio
 async def test_dispatcher_named():
     class Kek:
-        @di.dispatch_target('yeet')
+        @di.request('yeet')
         def topkek(self): return 'yee'
 
     n = di.DispatchNamespace(Kek(), di.DiscoverMode.public)
@@ -70,14 +70,14 @@ async def test_dispatcher_raises_paramserr():
 @pytest.mark.asyncio
 async def test_proxy_decorated():
     class Kek:
-        @di.proxy_target
+        @di.request
         def kektop(): pass
 
     async def callback(namespace, name, *args, **kwargs):
         return f'{namespace}/{name}/{args}/{kwargs}'
 
     k = Kek()
-    di.ProxyNamespace('yee', k, di.DiscoverMode.decorated, callback)
+    di.ProxyNamespace('yee', k, di.DiscoverMode.decorated, callback, callback)
 
     assert await k.kektop('a')       == 'yee/kektop/(\'a\',)/{}'
     assert await k.kektop(a='b')     == 'yee/kektop/()/{\'a\': \'b\'}'
@@ -96,7 +96,7 @@ async def test_proxy_public():
         return f'{namespace}/{name}/{args}/{kwargs}'
 
     k = Kek()
-    di.ProxyNamespace('yee', k, di.DiscoverMode.public, callback)
+    di.ProxyNamespace('yee', k, di.DiscoverMode.public, callback, callback)
 
     assert await k.kektop('a')       == 'yee/kektop/(\'a\',)/{}'
     assert await k.kektop(a='b')     == 'yee/kektop/()/{\'a\': \'b\'}'
@@ -119,7 +119,7 @@ async def test_proxy_all():
         return f'{namespace}/{name}/{args}/{kwargs}'
 
     k = Kek()
-    di.ProxyNamespace('yee', k, di.DiscoverMode.all, callback)
+    di.ProxyNamespace('yee', k, di.DiscoverMode.all, callback, callback)
 
     assert await k.kektop('a')       == 'yee/kektop/(\'a\',)/{}'
     assert await k.kektop(a='b')     == 'yee/kektop/()/{\'a\': \'b\'}'

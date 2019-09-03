@@ -8,7 +8,7 @@ import pytest
 @pytest.mark.asyncio
 async def test_handle_request():
     class Kek:
-        @dispatcher.dispatch_target
+        @dispatcher.request
         async def yeet(self): return 'kektop'
 
     e = JsonRpcEndpoint(None)
@@ -20,7 +20,7 @@ async def test_handle_request():
 @pytest.mark.asyncio
 async def test_handle_request_params():
     class Yeet:
-        @dispatcher.dispatch_target
+        @dispatcher.request
         async def yeet(self, a: str): return a
 
     e = JsonRpcEndpoint(None)
