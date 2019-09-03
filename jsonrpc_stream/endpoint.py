@@ -34,10 +34,36 @@ class JsonRpcEndpoint:
             protocol.RpcMalformed:    self._handle_malformed
         }
 
+        self._paramsdispatchers: typing.Dict[type, typing.Callable] = {
+            dict: self._dispatch_dict,
+            list: self._dispatch_list,
+            type(None): self._dispatch_none
+        }
+
+    async def _dispatch_dict(self, method, name, params):
+        return await method(name, **params)
+
+    async def _dispatch_list(self, method, name, params):
+        return await method(name, *params)
+
+    async def _dispatch_none(self, method, name, params):
+        return await method(name)
+
     def _parse_methodname(self, methodname: str) -> typing.Tuple[str, str]:
         parts = methodname.split(self.namespace_seperator)
         try: return (parts[0], parts[1])
         except IndexError: return ('', parts[0])
+
+    async def _dispatch_params(
+        self,
+        dispatcher: typing.Callable,
+        meth: str,
+        params: typing.Any
+    ) -> typing.Any:
+        try: return await self._paramsdispatchers[type(params)](
+            dispatcher, meth, params
+        )
+        except KeyError: return await dispatcher(params)
 
     async def _handle_request(
         self, request: protocol.RpcRequest
@@ -45,8 +71,8 @@ class JsonRpcEndpoint:
         try:
             logger.debug(f'handling request: {request}')
             namespace, method = self._parse_methodname(request.method)
-            res = await self.dispatchers[namespace].call_paramsobj(
-                method, request.params
+            res = await self._dispatch_params(
+                self.dispatchers[namespace].call, method, request.params
             )
 
             # make arbitrary classes serializable
@@ -74,8 +100,8 @@ class JsonRpcEndpoint:
         try:
             logger.debug(f'handling notification: {notify}')
             namespace, method = self._parse_methodname(notify.method)
-            await self.dispatchers[namespace].call_paramsobj(
-                notify.method, notify.params
+            await self._dispatch_params(
+                self.dispatchers[namespace].notify, method, notify.params
             )
         except Exception as e:
             logger.warning(f'error handling notification: {e}')
