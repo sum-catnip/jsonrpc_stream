@@ -170,10 +170,7 @@ class JsonRpcEndpoint:
 
     async def join(self): await self.running
 
-    def close(self):
-        self.stream.close()
-        # a buggy stream might not properly return none after calling close
-        self.running.set_result(None)
+    def close(self): self.stream.close()
 
     def start(self) -> 'JsonRpcEndpoint':
         self.running: asyncio.Future = asyncio.Future(loop=self.loop)
