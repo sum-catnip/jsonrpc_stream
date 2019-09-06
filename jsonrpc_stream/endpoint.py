@@ -198,7 +198,7 @@ class JsonRpcEndpoint:
     ) -> 'JsonRpcEndpoint':
         namespace = namespace or target.__class__.__name__
         self.proxies[namespace] = dispatcher.ProxyNamespace(
-            namespace, target, mode, self.call
+            namespace, target, mode, self.call, self.notify
         )
 
         return self
