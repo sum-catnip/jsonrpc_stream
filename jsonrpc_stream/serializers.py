@@ -67,7 +67,9 @@ class JsonSerializer(BaseSerializer):
         self.encoding = encoding
 
     def entity_to_bytes(self, entity: protocol.RpcEntity) -> bytes:
-        return json.dumps(entity.to_dict()).encode(self.encoding)
+        return json.dumps(
+            entity.to_dict(), default=lambda o: o.__dict__
+        ).encode(self.encoding)
 
     def bytes_to_entity(self, data: bytes) -> protocol.RpcEntity:
         try: deserialized: dict = json.loads(data.decode(self.encoding))
