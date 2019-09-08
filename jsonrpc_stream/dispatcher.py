@@ -49,7 +49,8 @@ def request(
 def notification(
     method: typing.Callable = None, name: str = None
 ) -> typing.Callable:
-    if not callable(method): return functools.partial(request, name=method)
+    if not callable(method):
+        return functools.partial(notification, name=method)
     mark_method(method, name, RequestType.notification)
     return method
 

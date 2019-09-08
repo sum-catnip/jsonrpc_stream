@@ -18,7 +18,7 @@ URL = 'https://gitlab.com/sum-catnip/jsonrpc_stream'
 EMAIL = 'catnip@catnip.fyi'
 AUTHOR = 'catnip'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.1.3'
+VERSION = '0.1.4'
 
 REQUIRED = []
 
